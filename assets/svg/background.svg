@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0, 2021-09-20)"
+   sodipodi:docname="background.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:zoom="0.75187991"
+     inkscape:cx="375.05989"
+     inkscape:cy="617.78483"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <sodipodi:guide
+       position="105.32989,141.4292"
+       orientation="1,0"
+       id="guide848" />
+    <sodipodi:guide
+       position="16.172199,224.58887"
+       orientation="1,0"
+       id="guide1056" />
+    <sodipodi:guide
+       position="194.55128,224.58887"
+       orientation="1,0"
+       id="guide1058" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2">
+    <linearGradient
+       inkscape:collect="always"
+       id="linearGradient8163">
+      <stop
+         style="stop-color:#c3ffff;stop-opacity:1;"
+         offset="0"
+         id="stop8159" />
+      <stop
+         style="stop-color:#c3ffff;stop-opacity:0;"
+         offset="1"
+         id="stop8161" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient8141"
+       inkscape:swatch="solid">
+      <stop
+         style="stop-color:#c3ffff;stop-opacity:1;"
+         offset="0"
+         id="stop8139" />
+    </linearGradient>
+    <radialGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient8163"
+       id="radialGradient8165"
+       cx="105.36174"
+       cy="58.806919"
+       fx="105.36174"
+       fy="58.806919"
+       r="89.939545"
+       gradientTransform="matrix(3.4689977,-0.00897239,3.5411689e-4,0.13691353,-260.15872,51.700803)"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#00ffff;stroke:#000000;stroke-width:0.541921;stroke-linecap:round;stroke-linejoin:round"
+       id="rect846"
+       width="199.63039"
+       height="258.81015"
+       x="5.5152011"
+       y="34.678902"
+       inkscape:export-filename="/home/carloscam/Escritorio/TIC-TAC-TOE-AI/assets/img/background.png"
+       inkscape:export-xdpi="98.560799"
+       inkscape:export-ydpi="98.560799" />
+    <rect
+       style="fill:url(#radialGradient8165);stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1;fill-rule:nonzero"
+       id="rect952"
+       width="178.37909"
+       height="27.208429"
+       x="16.172199"
+       y="45.202705"
+       inkscape:export-filename="/home/carloscam/Escritorio/TIC-TAC-TOE-AI/assets/img/background.png"
+       inkscape:export-xdpi="98.560799"
+       inkscape:export-ydpi="98.560799" />
+    <rect
+       style="fill:#c3ffff;stroke:#000000;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;fill-opacity:1"
+       id="rect1060"
+       width="178.37907"
+       height="178.37907"
+       x="16.172199"
+       y="89.115242"
+       inkscape:export-filename="/home/carloscam/Escritorio/TIC-TAC-TOE-AI/assets/img/background.png"
+       inkscape:export-xdpi="98.560799"
+       inkscape:export-ydpi="98.560799" />
+    <text
+       xml:space="preserve"
+       style="font-size:14.1111px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583;fill:#808000"
+       x="49.388351"
+       y="63.49823"
+       id="text9979"
+       inkscape:export-filename="/home/carloscam/Escritorio/TIC-TAC-TOE-AI/assets/img/background.png"
+       inkscape:export-xdpi="98.560799"
+       inkscape:export-ydpi="98.560799"><tspan
+         sodipodi:role="line"
+         id="tspan9977"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.1111px;font-family:sans-serif;-inkscape-font-specification:'sans-serif Bold Italic';fill:#808000;stroke-width:0.264583"
+         x="49.388351"
+         y="63.49823">TIC TAC TOE AI</tspan></text>
+  </g>
+</svg>
