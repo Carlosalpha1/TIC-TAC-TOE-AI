@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg936"
+   inkscape:version="1.1.1 (3bf5ae0, 2021-09-20)"
+   sodipodi:docname="o-piece.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview938"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.75187991"
+     inkscape:cx="396.33989"
+     inkscape:cy="561.92484"
+     inkscape:window-width="1848"
+     inkscape:window-height="1016"
+     inkscape:window-x="72"
+     inkscape:window-y="27"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs933" />
+  <g
+     inkscape:label="Capa 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-size:52.91666667px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583;fill:#800000"
+       x="85.006615"
+       y="137.41652"
+       id="text2163"
+       inkscape:export-filename="/home/carloscam/Escritorio/TIC-TAC-TOE-AI/assets/img/o-piece.png"
+       inkscape:export-xdpi="98.560799"
+       inkscape:export-ydpi="98.560799"><tspan
+         sodipodi:role="line"
+         id="tspan2161"
+         style="stroke-width:0.264583;font-size:52.91666667px;fill:#800000"
+         x="85.006615"
+         y="137.41652">O</tspan></text>
+  </g>
+</svg>
