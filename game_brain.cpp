@@ -21,37 +21,37 @@
 namespace game_manager
 {
 
-Node::Node(const std::vector <char> st)
+Node::Node(const State st)
     : state(st)
 {
     value = utility(state);
 }
 
-std::vector <char> minmax_decision(const std::vector <char> & state)
+State minmax_decision(const State & state)
 {
-    Node best_node = max_value__minmax(state, 0);
+    Node best_node = max_value__minmax(state);
     return best_node.state;
 }
 
-void print_state(const std::vector<char> & state)
+void print_state(const State & state)
 {
     for (int i = 0; i < state.size(); i++) {
         std::cout << state[i] << " ";
     }
 }
 
-Node max_value__minmax(const std::vector <char> & state, int level)
+Node max_value__minmax(const State & state)
 {
     if (is_terminal_state(state)) {
         return Node(state);
     }
+
     int best_score = -1000;
     auto state_successors = successors(state, 'O');
     int i_max = 0, value = 0;
 
     for (std::size_t i = 0; i < state_successors.size(); i++) {
-
-        value = min_value__minmax(state_successors[i], level+1).value;
+        value = min_value__minmax(state_successors[i]).value;
         if (value > best_score) {
             best_score = value;
             i_max = i;
@@ -60,7 +60,7 @@ Node max_value__minmax(const std::vector <char> & state, int level)
     return Node(state_successors[i_max]);
 }
 
-Node min_value__minmax(const std::vector <char> & state, int level)
+Node min_value__minmax(const State & state)
 {
     if (is_terminal_state(state)) {
         return Node(state);
@@ -71,7 +71,7 @@ Node min_value__minmax(const std::vector <char> & state, int level)
     int i_min = 0, value = 0;
 
     for (std::size_t i = 0; i < state_successors.size(); i++) {
-        value = max_value__minmax(state_successors[i], level+1).value;
+        value = max_value__minmax(state_successors[i]).value;
         if (value < best_score) {
             best_score = value;
             i_min = i;
@@ -80,7 +80,7 @@ Node min_value__minmax(const std::vector <char> & state, int level)
     return Node(state_successors[i_min]);
 }
 
-bool is_terminal_state(const std::vector <char> & state)
+bool is_terminal_state(const State & state)
 {
     if (is_tic_tac_toe(state, 'O') || is_tic_tac_toe(state, 'X')) {
         return true;
@@ -93,7 +93,7 @@ bool is_terminal_state(const std::vector <char> & state)
     return true;
 }
 
-int utility(const std::vector<char> & state)
+int utility(const State & state)
 {
     int value;
 
@@ -121,9 +121,9 @@ int utility(const std::vector<char> & state)
     return value*k;
 }
 
-std::vector<std::vector<char> > successors(const std::vector<char> & state, char piece)
+std::vector<State> successors(const State & state, char piece)
 {
-    std::vector <std::vector<char> > states;
+    std::vector <State> states;
     for (std::size_t i = 0; i < state.size(); i++) {
         if (state[i] != '-') {
             continue;
