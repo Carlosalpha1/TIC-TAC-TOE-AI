@@ -13,6 +13,9 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+#include <unistd.h>
+#include <cmath>
+#include <iostream>
 #include "game_brain.hpp"
 
 namespace game_manager
@@ -26,21 +29,29 @@ Node::Node(const std::vector <char> st)
 
 std::vector <char> minmax_decision(const std::vector <char> & state)
 {
-    Node best_node = max_value__minmax(state);
+    Node best_node = max_value__minmax(state, 0);
     return best_node.state;
 }
 
-Node max_value__minmax(const std::vector <char> & state)
+void print_state(const std::vector<char> & state)
+{
+    for (int i = 0; i < state.size(); i++) {
+        std::cout << state[i] << " ";
+    }
+}
+
+Node max_value__minmax(const std::vector <char> & state, int level)
 {
     if (is_terminal_state(state)) {
         return Node(state);
     }
-    int best_score = -100;
+    int best_score = -1000;
     auto state_successors = successors(state, 'O');
     int i_max = 0, value = 0;
 
     for (std::size_t i = 0; i < state_successors.size(); i++) {
-        value = min_value__minmax(state_successors[i]).value;
+
+        value = min_value__minmax(state_successors[i], level+1).value;
         if (value > best_score) {
             best_score = value;
             i_max = i;
@@ -49,18 +60,18 @@ Node max_value__minmax(const std::vector <char> & state)
     return Node(state_successors[i_max]);
 }
 
-Node min_value__minmax(const std::vector <char> & state)
+Node min_value__minmax(const std::vector <char> & state, int level)
 {
     if (is_terminal_state(state)) {
         return Node(state);
     }
 
-    int best_score = 100;
+    int best_score = 1000;
     auto state_successors = successors(state, 'X');
     int i_min = 0, value = 0;
 
     for (std::size_t i = 0; i < state_successors.size(); i++) {
-        value = min_value__minmax(state_successors[i]).value;
+        value = max_value__minmax(state_successors[i], level+1).value;
         if (value < best_score) {
             best_score = value;
             i_min = i;
@@ -87,13 +98,17 @@ int utility(const std::vector<char> & state)
     int value;
 
     if (is_tic_tac_toe(state, 'O')) {
-        value = 1;
+        value = 10;
     }
     else if (is_tic_tac_toe(state, 'X')) {
-        value = -1;
+        value = -10;
     }
     else {
-        value = 0;
+        value = 5;
+    }
+
+    if (state[4] == 'O') {
+        value++;
     }
 
     int k = 1;
@@ -122,18 +137,44 @@ std::vector<std::vector<char> > successors(const std::vector<char> & state, char
 
 bool is_tic_tac_toe(std::vector<char> state, char piece)
 {
-    if ((piece == state[0] && piece == state[4] && piece == state[8]) ||
-        (piece == state[2] && piece == state[4] && piece == state[6]) ||
-        (piece == state[0] && piece == state[1] && piece == state[2]) ||
-        (piece == state[3] && piece == state[4] && piece == state[5]) ||
-        (piece == state[6] && piece == state[7] && piece == state[8]) ||
-        (piece == state[0] && piece == state[3] && piece == state[6]) ||
-        (piece == state[1] && piece == state[4] && piece == state[7]) ||
-        (piece == state[2] && piece == state[5] && piece == state[8])) {
-        return true;
+    int nrows = std::sqrt(state.size());
+
+    // Analizing colums
+    for (int i = 0; i < nrows; i++) {
+        for (int j = 0; j < nrows; j++) {
+            if (piece != state[i+j*nrows]) {
+                break;
+            }
+            if (j == (nrows-1)) return true;
+        }
+    }
+
+    // Analizing rows
+    for (int i = 0; i < nrows; i++) {
+        for (int j = 0; j < nrows; j++) {
+            if (piece != state[i*nrows + j]){
+                break;
+            }
+            if (j == (nrows-1)) return true;
+        }
+    }
+
+    // Analizing diagonal 1
+    for (int i = 0; i < nrows; i++) {
+        if (piece != state[(1+nrows)*i]) {
+            break;
+        }
+        if (i == (nrows-1)) return true;
+    }
+
+    // Analizing diagonal 2
+    for (int i = 0; i < nrows; i++) {
+        if (piece != state[(nrows-1)*(i+1)]) {
+            break;
+        }
+        if (i == (nrows-1)) return true;
     }
     return false;
 }
-
 
 }
