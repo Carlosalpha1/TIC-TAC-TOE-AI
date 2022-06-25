@@ -19,25 +19,27 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+typedef std::vector<char> State;
+
 namespace game_manager
 {
 
 class Node
 {
 public:
-    std::vector <char> state;
+    State state;
     int value;
 
-    Node(const std::vector <char> st);
+    Node(const State st);
 };
 
-int utility(const std::vector<char> & state);
-bool is_tic_tac_toe(std::vector<char> state, char piece);
-Node max_value__minmax(const std::vector <char> & state, int level);
-Node min_value__minmax(const std::vector <char> & state, int level);
-bool is_terminal_state(const std::vector <char> & state);
-std::vector<std::vector <char> > successors(const std::vector<char> & state, char piece);
-std::vector <char> minmax_decision(const std::vector <char> & state);
+int utility(const State & state);
+bool is_tic_tac_toe(State state, char piece);
+Node max_value__minmax(const State & state);
+Node min_value__minmax(const State & state);
+bool is_terminal_state(const State & state);
+std::vector<State> successors(const State & state, char piece);
+State minmax_decision(const State & state);
 
 };
 
