@@ -23,12 +23,13 @@
 class GraphicsTable : public sf::Drawable
 {
 protected:
+    int width_, height_, side_;
     std::vector<char> boxes_;
     std::map<std::string, sf::Vector2f> points_;
     float cellsize_;
 
 public:
-    GraphicsTable();
+    GraphicsTable(const sf::Vector2f & ext1, const sf::Vector2f & ext2, int side = 3);
     ~GraphicsTable(){};
 
     std::vector<int> getDimensions() const;
