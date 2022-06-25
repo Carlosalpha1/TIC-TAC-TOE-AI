@@ -36,6 +36,7 @@ public:
     sf::Vector2i realPose2DiscretePose(const sf::Vector2i & pose) const;
 
     void setPosePiece(int row, int col, char piece);
+    void setState(const std::vector <char> state);
     char getPiece(int row, int col) const;
     bool isFull() const;
     void clear();
