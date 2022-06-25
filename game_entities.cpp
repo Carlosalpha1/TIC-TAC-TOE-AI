@@ -76,6 +76,11 @@ void GraphicsTable::setPosePiece(int row, int col, char piece)
     boxes_[row*3+col] = piece;
 }
 
+void GraphicsTable::setState(const std::vector <char> state)
+{
+    boxes_=state;
+}
+
 char GraphicsTable::getPiece(int row, int col) const
 {
     return boxes_[row*3+col];
