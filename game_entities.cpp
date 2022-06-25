@@ -38,13 +38,16 @@ void drawGrid(sf::RenderTarget & target, sf::RenderStates states,
     }
 }
 
-GraphicsTable::GraphicsTable() : boxes_(9, '-')
+GraphicsTable::GraphicsTable(const sf::Vector2f & tl, const sf::Vector2f & br, int side)
+    : boxes_(side*side, '-'), side_(side)
 {
-    points_["TL"] = sf::Vector2f(45, 215);       // Top Left
-    points_["TR"] = sf::Vector2f(45+690, 215);   // Top Right
-    points_["BL"] = sf::Vector2f(45, 900);       // Bottom Left
-    points_["BR"] = sf::Vector2f(45+690, 900);   // Bottom Right
+    points_["TL"] = tl;                         // Top Left
+    points_["TR"] = sf::Vector2f(br.x, tl.y);   // Top Right
+    points_["BL"] = sf::Vector2f(tl.x, br.y);   // Bottom Left
+    points_["BR"] = br;                         // Bottom Right
 
+    width_ = br.x - tl.x;
+    height_ = br.y - tl.y;
     // Get Size of cell
     cellsize_ = (points_.at("TR").x-points_.at("TL").x)/3.0;
 };
@@ -55,8 +58,8 @@ std::vector<int> GraphicsTable::getDimensions() const
     std::vector<int> dim(4, 0);
     dim[0] = points_.at("TL").x;
     dim[1] = points_.at("TL").y;
-    dim[2] = points_.at("TR").x - points_.at("TL").x;
-    dim[3] = points_.at("BL").y - points_.at("TL").y;
+    dim[2] = width_;
+    dim[3] = height_;
     return dim;
 }
 
@@ -73,7 +76,7 @@ sf::Vector2i GraphicsTable::realPose2DiscretePose(const sf::Vector2i & pose) con
 
 void GraphicsTable::setPosePiece(int row, int col, char piece)
 {
-    boxes_[row*3+col] = piece;
+    boxes_[row*side_+col] = piece;
 }
 
 void GraphicsTable::setState(const std::vector <char> state)
@@ -83,7 +86,7 @@ void GraphicsTable::setState(const std::vector <char> state)
 
 char GraphicsTable::getPiece(int row, int col) const
 {
-    return boxes_[row*3+col];
+    return boxes_[row*side_+col];
 }
 
 bool GraphicsTable::isFull() const
@@ -106,10 +109,10 @@ void GraphicsTable::clear()
 void GraphicsTable::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // Draw Grid
-    drawGrid(target, states, points_);
+    drawGrid(target, states, points_, side_, side_);
 
     // Get Size of cell
-    float cellsize = (points_.at("TR").x-points_.at("TL").x)/3.0;
+    float cellsize = (points_.at("TR").x-points_.at("TL").x)/side_;
 
     // Draw Pieces
     for (std::size_t i = 0; i < boxes_.size(); i++) {
@@ -125,8 +128,8 @@ void GraphicsTable::draw(sf::RenderTarget& target, sf::RenderStates states) cons
             continue;
         }
 
-        int row = i/3;
-        int col = i%3;
+        int row = i/side_;
+        int col = i%side_;
         float x_gap = (cellsize-piece_texture.getSize().x)/2.0;
         float y_gap = (cellsize-piece_texture.getSize().y)/2.0;
 

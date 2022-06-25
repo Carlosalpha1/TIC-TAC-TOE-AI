@@ -21,7 +21,7 @@
 
 const std::string WND_TITLE = "TIC-TAC-TOE AI";
 
-int main()
+int main(int argc, char **argv)
 {
     /**
      * It initializes the Background creating a texture and a sprite
@@ -54,7 +54,9 @@ int main()
     /**
      * It creates the table of the game
      * **/
-    GraphicsTable table;
+    GraphicsTable table(
+        sf::Vector2f(45, 215),
+        sf::Vector2f(735, 900));
     
     /**
      * It sets the initial value of the game state variables

@@ -19,8 +19,6 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 
-typedef sf::Vector2f Action;
-
 namespace game_manager
 {
 
@@ -33,14 +31,13 @@ public:
     Node(const std::vector <char> st);
 };
 
-bool is_tic_tac_toe(std::vector<char> state, char piece);
-
-std::vector <char> minmax_decision(const std::vector <char> & state);
-Node max_value__minmax(const std::vector <char> & state);
-Node min_value__minmax(const std::vector <char> & state);
-bool is_terminal_state(const std::vector <char> & state);
 int utility(const std::vector<char> & state);
+bool is_tic_tac_toe(std::vector<char> state, char piece);
+Node max_value__minmax(const std::vector <char> & state, int level);
+Node min_value__minmax(const std::vector <char> & state, int level);
+bool is_terminal_state(const std::vector <char> & state);
 std::vector<std::vector <char> > successors(const std::vector<char> & state, char piece);
+std::vector <char> minmax_decision(const std::vector <char> & state);
 
 };
 
