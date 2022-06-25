@@ -49,7 +49,7 @@ GraphicsTable::GraphicsTable(const sf::Vector2f & tl, const sf::Vector2f & br, i
     width_ = br.x - tl.x;
     height_ = br.y - tl.y;
     // Get Size of cell
-    cellsize_ = (points_.at("TR").x-points_.at("TL").x)/3.0;
+    cellsize_ = (points_.at("TR").x-points_.at("TL").x)/side_;
 };
 
 /** It returns x, y, w, h **/
