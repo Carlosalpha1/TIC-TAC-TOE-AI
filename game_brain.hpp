@@ -16,31 +16,72 @@
 #ifndef TICTACTOE_AI_GAME_BRAIN_HPP_
 #define TICTACTOE_AI_GAME_BRAIN_HPP_
 
+#include <iostream>
 #include <vector>
 #include <SFML/Graphics.hpp>
 
+// Aliases
 typedef std::vector<char> State;
+typedef sf::Vector2i Movement;
+typedef char Piece;
+
+
 
 namespace game_manager
 {
 
-class Node
+struct Action
 {
+    Movement move;
+    Piece piece;
+};
+
+class Game {
+
+private:
+    int side_;
+
+    int max_value__minmax(const State &);
+    int min_value__minmax(const State &);
+    std::vector<State> successors(const State &, Piece);
+
 public:
-    State state;
-    int value;
+    Game() : side_(0) {}
 
-    Node(const State st);
+
+    bool isTicTacToe(State state, Piece);
+
+    /**
+     * It returns all possible movements:
+     * Movement -> (Row, Column, Piece)
+     **/
+    std::vector<Action> actions(const State & state, Piece);
+
+    /**
+     * It returns a result state of doing a movement in a state
+     * The result is a map of all cells:
+     * State -> [X, O, -, X, X ...]
+     **/
+    State result(const State & state, Action & action) const;
+
+    /**
+     * This is the Evaluation Function of the Problem
+     **/
+    int utility(const State & state);
+
+    /**
+     * This function returns if is TICTACTOE or the table is FULL
+     **/
+    bool isTerminalState(const State & state);
+    
+    State minmax_decision(const State & state);
 };
 
-int utility(const State & state);
-bool is_tic_tac_toe(State state, char piece);
-Node max_value__minmax(const State & state);
-Node min_value__minmax(const State & state);
-bool is_terminal_state(const State & state);
-std::vector<State> successors(const State & state, char piece);
-State minmax_decision(const State & state);
-
 };
 
-#endif
+// Debugging functions
+std::ostream & operator<<(std::ostream & os, const game_manager::Action & action);
+std::ostream & operator<<(std::ostream & os, const std::vector<game_manager::Action> & actions);
+std::ostream & operator<<(std::ostream & os, const State & state);
+
+#endif  // TICTACTOE_AI_GAME_BRAIN_HPP_
