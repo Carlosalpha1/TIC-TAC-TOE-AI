@@ -36,7 +36,7 @@ struct Action
     Piece piece;
 };
 
-class Game {
+class Problem {
 
 private:
     int side_;
@@ -46,7 +46,7 @@ private:
     std::vector<State> successors(const State &, Piece);
 
 public:
-    Game() : side_(0) {}
+    Problem() : side_(0) {}
 
 
     bool isTicTacToe(State state, Piece);
