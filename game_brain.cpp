@@ -25,7 +25,7 @@ namespace game_manager
 /**
  *  MinMax Algorithm
  **/
-State Game::minmax_decision(const State & state)
+State Problem::minmax_decision(const State & state)
 {
     side_ = std::sqrt(state.size());
 
@@ -45,7 +45,7 @@ State Game::minmax_decision(const State & state)
     return result(state, moves[i_max]);
 }
 
-int Game::max_value__minmax(const State & state)
+int Problem::max_value__minmax(const State & state)
 {
     if (isTerminalState(state)) {
         return utility(state);
@@ -58,7 +58,7 @@ int Game::max_value__minmax(const State & state)
     return value;
 }
 
-int Game::min_value__minmax(const State & state)
+int Problem::min_value__minmax(const State & state)
 {
     if (isTerminalState(state)) {
         return utility(state);
@@ -74,7 +74,7 @@ int Game::min_value__minmax(const State & state)
 /**
  * GAME/PROBLEM METHODS
  **/
-std::vector<Action> Game::actions(const State & state, Piece piece)
+std::vector<Action> Problem::actions(const State & state, Piece piece)
 {
     std::vector<Action> actions;
 
@@ -90,14 +90,14 @@ std::vector<Action> Game::actions(const State & state, Piece piece)
     return actions;
 }
 
-State Game::result(const State & state, Action & action) const
+State Problem::result(const State & state, Action & action) const
 {
     State st_result = state;
     st_result[action.move.x*side_+action.move.y] = action.piece;
     return st_result;
 }
 
-int Game::utility(const State & state)
+int Problem::utility(const State & state)
 {
     int value;
 
@@ -121,7 +121,7 @@ int Game::utility(const State & state)
     return value*k;
 }
 
-bool Game::isTerminalState(const State & state)
+bool Problem::isTerminalState(const State & state)
 {
     if (isTicTacToe(state, 'O') || isTicTacToe(state, 'X')) {
         return true;
@@ -134,7 +134,7 @@ bool Game::isTerminalState(const State & state)
     return true;
 }
 
-bool Game::isTicTacToe(State state, Piece piece)
+bool Problem::isTicTacToe(State state, Piece piece)
 {
     int nrows = side_;
 

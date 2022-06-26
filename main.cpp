@@ -57,7 +57,7 @@ int main(int argc, char **argv)
     GraphicsTable table(
         sf::Vector2f(45, 215),
         sf::Vector2f(735, 900));
-    game_manager::Game game;
+    game_manager::Problem game;
     
     /**
      * It sets the initial value of the game state variables
