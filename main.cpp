@@ -57,6 +57,7 @@ int main(int argc, char **argv)
     GraphicsTable table(
         sf::Vector2f(45, 215),
         sf::Vector2f(735, 900));
+    game_manager::Game game;
     
     /**
      * It sets the initial value of the game state variables
@@ -140,16 +141,18 @@ int main(int argc, char **argv)
                 }
             }
             else {
-                auto opponent_move = game_manager::minmax_decision(table.getState());
-                table.setState(opponent_move);
-                b_analysis = true;
+                if (!b_game_over) {
+                    auto opponent_move = game.minmax_decision(table.getState());
+                    table.setState(opponent_move);
+                    b_analysis = true;
+                }
             }
 
             if (b_analysis) {
                 auto state = table.getState();
 
-                if (game_manager::is_tic_tac_toe(state, 'O') ||
-                    game_manager::is_tic_tac_toe(state, 'X')) {
+                if (game.isTicTacToe(state, 'O') ||
+                    game.isTicTacToe(state, 'X')) {
                     
                     std::string str_winner = b_player_turn ? "YOU WIN!" : "MACHINE WINS!";
                     b_game_over = true;

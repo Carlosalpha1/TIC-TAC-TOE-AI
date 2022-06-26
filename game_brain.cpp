@@ -15,100 +15,100 @@
 
 #include <unistd.h>
 #include <cmath>
-#include <iostream>
 #include "game_brain.hpp"
+
+using namespace std;
 
 namespace game_manager
 {
 
-Node::Node(const State st)
-    : state(st)
+/**
+ *  MinMax Algorithm
+ **/
+State Game::minmax_decision(const State & state)
 {
-    value = utility(state);
-}
+    side_ = std::sqrt(state.size());
 
-State minmax_decision(const State & state)
-{
-    Node best_node = max_value__minmax(state);
-    return best_node.state;
-}
+    State best_state;
+    int value;
+    int i_max = 0, max_score = -99999;
+    auto moves = actions(state, 'O');
 
-void print_state(const State & state)
-{
-    for (int i = 0; i < state.size(); i++) {
-        std::cout << state[i] << " ";
-    }
-}
-
-Node max_value__minmax(const State & state)
-{
-    if (is_terminal_state(state)) {
-        return Node(state);
-    }
-
-    int best_score = -1000;
-    auto state_successors = successors(state, 'O');
-    int i_max = 0, value = 0;
-
-    for (std::size_t i = 0; i < state_successors.size(); i++) {
-        value = min_value__minmax(state_successors[i]).value;
-        if (value > best_score) {
-            best_score = value;
+    for (std::size_t i = 0; i < moves.size(); i++) {
+        value = min_value__minmax(result(state, moves[i]));
+        if (value > max_score) {
+            max_score = value;
             i_max = i;
         }
     }
-    return Node(state_successors[i_max]);
+
+    return result(state, moves[i_max]);
 }
 
-Node min_value__minmax(const State & state)
+int Game::max_value__minmax(const State & state)
 {
-    if (is_terminal_state(state)) {
-        return Node(state);
+    if (isTerminalState(state)) {
+        return utility(state);
     }
-
-    int best_score = 1000;
-    auto state_successors = successors(state, 'X');
-    int i_min = 0, value = 0;
-
-    for (std::size_t i = 0; i < state_successors.size(); i++) {
-        value = max_value__minmax(state_successors[i]).value;
-        if (value < best_score) {
-            best_score = value;
-            i_min = i;
-        }
+    
+    int value = -std::numeric_limits<int>::max();
+    for (auto action : actions(state, 'O')) {
+        value = std::max(value, min_value__minmax(result(state, action)));
     }
-    return Node(state_successors[i_min]);
+    return value;
 }
 
-bool is_terminal_state(const State & state)
+int Game::min_value__minmax(const State & state)
 {
-    if (is_tic_tac_toe(state, 'O') || is_tic_tac_toe(state, 'X')) {
-        return true;
+    if (isTerminalState(state)) {
+        return utility(state);
     }
+    
+    int value = std::numeric_limits<int>::max();
+    for (auto action : actions(state, 'X')) {
+        value = std::min(value, max_value__minmax(result(state, action)));
+    }
+    return value;
+}
+
+/**
+ * GAME/PROBLEM METHODS
+ **/
+std::vector<Action> Game::actions(const State & state, Piece piece)
+{
+    std::vector<Action> actions;
+
     for (std::size_t i = 0; i < state.size(); i++) {
         if (state[i] == '-') {
-            return false;
+            Action act;
+            act.move.x = i / side_;
+            act.move.y = i % side_;
+            act.piece = piece;
+            actions.push_back(act);
         }
     }
-    return true;
+    return actions;
 }
 
-int utility(const State & state)
+State Game::result(const State & state, Action & action) const
+{
+    State st_result = state;
+    st_result[action.move.x*side_+action.move.y] = action.piece;
+    return st_result;
+}
+
+int Game::utility(const State & state)
 {
     int value;
 
-    if (is_tic_tac_toe(state, 'O')) {
-        value = 10;
+    if (isTicTacToe(state, 'O')) {
+        value = 1;
     }
-    else if (is_tic_tac_toe(state, 'X')) {
-        value = -10;
+    else if (isTicTacToe(state, 'X')) {
+        value = -1;
     }
     else {
-        value = 5;
-    }
-
-    if (state[4] == 'O') {
-        value++;
+        value = 0;
     }
 
     int k = 1;
@@ -121,23 +121,22 @@ int utility(const State & state)
     return value*k;
 }
 
-std::vector<State> successors(const State & state, char piece)
+bool Game::isTerminalState(const State & state)
 {
-    std::vector <State> states;
-    for (std::size_t i = 0; i < state.size(); i++) {
-        if (state[i] != '-') {
-            continue;
-        }
-
-        states.push_back(state);
-        states.back()[i] = piece;
+    if (isTicTacToe(state, 'O') || isTicTacToe(state, 'X')) {
+        return true;
     }
-    return states;
+    for (std::size_t i = 0; i < state.size(); i++) {
+        if (state[i] == '-') {
+            return false;
+        }
+    }
+    return true;
 }
 
-bool is_tic_tac_toe(std::vector<char> state, char piece)
+bool Game::isTicTacToe(State state, Piece piece)
 {
-    int nrows = std::sqrt(state.size());
+    int nrows = side_;
 
     // Analizing colums
     for (int i = 0; i < nrows; i++) {
@@ -177,4 +176,26 @@ bool is_tic_tac_toe(std::vector<char> state, char piece)
     return false;
 }
 
+}
+
+ostream & operator<<(ostream & os, const game_manager::Action & action)
+{
+    os << action.move.x << " " << action.move.y << " " << action.piece;
+    return os;
+}
+
+ostream & operator<<(ostream & os, const std::vector<game_manager::Action> & actions)
+{
+    for (auto action : actions) {
+        os << "[(" << action << ")] ";
+    }
+    return os;
+}
+
+ostream & operator<<(ostream & os, const State & state)
+{
+    for (std::size_t i = 0; i < state.size(); i++) {
+        os << state[i] << " ";
+    }
+    return os;
 }
