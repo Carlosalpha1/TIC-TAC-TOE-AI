@@ -28,6 +28,7 @@ int main(int argc, char **argv)
      * **/
     sf::Texture bg_texture;
     bg_texture.loadFromFile("assets/img/background.png");
+
     sf::Sprite background(bg_texture);
     sf::VideoMode vm(bg_texture.getSize().x, bg_texture.getSize().y);
 
@@ -193,10 +194,8 @@ int main(int argc, char **argv)
         if (b_start_game) {
             window.draw(table);
         }
-        else {
-            if (!b_game_over) {
-                window.draw(enter_text);
-            }
+        else if (!b_game_over) {
+            window.draw(enter_text);
         }
         window.display();
     }
