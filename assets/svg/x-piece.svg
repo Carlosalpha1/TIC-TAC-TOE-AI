@@ -24,7 +24,7 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="1.0633188"
-     inkscape:cx="333.86036"
+     inkscape:cx="119.43737"
      inkscape:cy="434.95892"
      inkscape:window-width="1848"
      inkscape:window-height="1016"
@@ -40,13 +40,16 @@
      id="layer1">
     <text
        xml:space="preserve"
-       style="font-size:52.9167px;line-height:1.25;font-family:sans-serif;fill:#ff0000;stroke-width:0.264583"
+       style="font-size:38.80555556px;line-height:1.25;font-family:sans-serif;fill:#ff0000;stroke-width:0.264583"
        x="54.727425"
        y="148.53178"
-       id="text2300"><tspan
+       id="text2300"
+       inkscape:export-filename="/home/carloscam/Escritorio/TIC-TAC-TOE-AI/assets/img/x-piece.png"
+       inkscape:export-xdpi="98.560799"
+       inkscape:export-ydpi="98.560799"><tspan
          sodipodi:role="line"
          id="tspan2298"
-         style="font-size:52.9167px;fill:#ff0000;stroke-width:0.264583"
+         style="fill:#ff0000;stroke-width:0.264583;font-size:38.80555556px"
          x="54.727425"
          y="148.53178">X</tspan></text>
   </g>
