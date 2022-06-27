@@ -24,7 +24,7 @@
      inkscape:document-units="mm"
      showgrid="false"
      inkscape:zoom="0.75187991"
-     inkscape:cx="396.33989"
+     inkscape:cx="93.099974"
      inkscape:cy="561.92484"
      inkscape:window-width="1848"
      inkscape:window-height="1016"
@@ -40,7 +40,7 @@
      id="layer1">
     <text
        xml:space="preserve"
-       style="font-size:52.91666667px;line-height:1.25;font-family:sans-serif;stroke-width:0.264583;fill:#800000"
+       style="font-size:38.8056px;line-height:1.25;font-family:sans-serif;fill:#800000;stroke-width:0.264583"
        x="85.006615"
        y="137.41652"
        id="text2163"
@@ -49,7 +49,7 @@
        inkscape:export-ydpi="98.560799"><tspan
          sodipodi:role="line"
          id="tspan2161"
-         style="stroke-width:0.264583;font-size:52.91666667px;fill:#800000"
+         style="font-size:38.8056px;fill:#800000;stroke-width:0.264583"
          x="85.006615"
          y="137.41652">O</tspan></text>
   </g>
