@@ -20,15 +20,26 @@
 #include <SFML/Graphics.hpp>
 
 const std::string WND_TITLE = "TIC-TAC-TOE AI";
+const std::string BACKGROUND_FILE = "assets/img/background.png";
+const std::string FONT_FILE = "assets/fonts/bodoni/BodoniFLF-Bold.ttf";
 
-int main(int argc, char **argv)
+void usage(char ** argv)
 {
+    std::cerr << argv[0] << " [1 / 2]\n";
+}
+
+int main(int argc, char ** argv)
+{
+    if (argc > 2) {
+        usage(argv);
+        return 1;
+    }
+
     /**
      * It initializes the Background creating a texture and a sprite
      * **/
     sf::Texture bg_texture;
-    bg_texture.loadFromFile("assets/img/background.png");
-
+    bg_texture.loadFromFile(BACKGROUND_FILE);
     sf::Sprite background(bg_texture);
     sf::VideoMode vm(bg_texture.getSize().x, bg_texture.getSize().y);
 
@@ -38,26 +49,27 @@ int main(int argc, char **argv)
     sf::RenderWindow window;
     window.create(vm, WND_TITLE);
     window.setFramerateLimit(20);
+    int wnd_width = window.getSize().x;
+    int wnd_height = window.getSize().y;
 
     /**
      * It creates the Font and places it on the background
      * **/
     sf::Font font;
-    int scale_font_factor=2;
-    font.loadFromFile("assets/fonts/bodoni/BodoniFLF-Bold.ttf");
+    font.loadFromFile(FONT_FILE);
     sf::Text enter_text("Enter To Start", font);
     enter_text.setFillColor(sf::Color::Black);
-    enter_text.scale(scale_font_factor, scale_font_factor);
+    enter_text.setCharacterSize(50);
     enter_text.setPosition(    // Placing in center of the window
-        window.getSize().x/2 - enter_text.getLocalBounds().width*scale_font_factor/2,
-        window.getSize().y/2);
+        wnd_width/2 - enter_text.getLocalBounds().width/2,
+        wnd_height/2);
     
     /**
      * It creates the table of the game
      * **/
     GraphicsTable table(
-        sf::Vector2f(45, 215),
-        sf::Vector2f(735, 900));
+        sf::Vector2f(45*wnd_width/777, 215*wnd_height/1006),
+        sf::Vector2f(735*wnd_width/777, 900*wnd_height/1006));
     game_manager::Problem game;
     game_manager::ProblemResolver problem_resolver;
     problem_resolver.setProblem(&game);
@@ -67,24 +79,27 @@ int main(int argc, char **argv)
      * **/
     bool b_lock_click, b_clicked = false;
     bool b_player_turn, b_start_game, b_analysis, b_init_timer, b_game_over;
-    auto reset = [&table, &b_player_turn,
-                  &b_start_game, &b_analysis,
-                  &b_init_timer, &b_game_over] () {
+    char c_player_turn = '1';
+
+    if (argc == 2 && argv[1][0] == '2'){
+        c_player_turn = argv[1][0];
+    }
+    auto reset = [&table, &b_start_game,
+                  &b_analysis, &b_init_timer, &b_game_over,
+                  &b_player_turn, &c_player_turn] () {
         table.clear();
-        b_player_turn = true;
         b_start_game = false;
         b_analysis = false;
         b_init_timer = true;
         b_game_over = false;
+        b_player_turn = (c_player_turn == '1') ? true : false;
     };
     reset();
     
-
     /**
-     * It creates a timer for casual events of delay
+     * It creates a clock for casual events of delay
      * **/
     sf::Clock clock;
-    sf::Time start_time;
 
     /**
      * Mainloop
@@ -157,12 +172,7 @@ int main(int argc, char **argv)
             if (b_analysis) {
                 auto state = table.getState();
 
-                if (game.isTicTacToe(state, 'O') || game.isTicTacToe(state, 'X')) {
-                    
-                    std::string str_winner = b_player_turn ? "YOU WIN!" : "MACHINE WINS!";
-                    b_game_over = true;
-                }
-                else if (table.isFull()) {
+                if (game.isTicTacToe(state, 'O') || game.isTicTacToe(state, 'X') || table.isFull()) {
                     b_game_over = true;
                 }
                 else {

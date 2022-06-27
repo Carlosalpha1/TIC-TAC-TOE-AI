@@ -89,42 +89,40 @@ bool Problem::isTerminalState(const State & state)
 
 bool Problem::isTicTacToe(State state, Piece piece)
 {
-    int nrows = side_;
-
     // Analizing colums
-    for (int i = 0; i < nrows; i++) {
-        for (int j = 0; j < nrows; j++) {
-            if (piece != state[i+j*nrows]) {
+    for (int i = 0; i < side_; i++) {
+        for (int j = 0; j < side_; j++) {
+            if (piece != state[i+j*side_]) {
                 break;
             }
-            if (j == (nrows-1)) return true;
+            if (j == (side_-1)) return true;
         }
     }
 
     // Analizing rows
-    for (int i = 0; i < nrows; i++) {
-        for (int j = 0; j < nrows; j++) {
-            if (piece != state[i*nrows + j]){
+    for (int i = 0; i < side_; i++) {
+        for (int j = 0; j < side_; j++) {
+            if (piece != state[i*side_ + j]){
                 break;
             }
-            if (j == (nrows-1)) return true;
+            if (j == (side_-1)) return true;
         }
     }
 
     // Analizing diagonal 1
-    for (int i = 0; i < nrows; i++) {
-        if (piece != state[(1+nrows)*i]) {
+    for (int i = 0; i < side_; i++) {
+        if (piece != state[(1+side_)*i]) {
             break;
         }
-        if (i == (nrows-1)) return true;
+        if (i == (side_-1)) return true;
     }
 
     // Analizing diagonal 2
-    for (int i = 0; i < nrows; i++) {
-        if (piece != state[(nrows-1)*(i+1)]) {
+    for (int i = 0; i < side_; i++) {
+        if (piece != state[(side_-1)*(i+1)]) {
             break;
         }
-        if (i == (nrows-1)) return true;
+        if (i == (side_-1)) return true;
     }
     return false;
 }
