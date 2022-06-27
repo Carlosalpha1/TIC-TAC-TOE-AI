@@ -26,7 +26,6 @@ typedef sf::Vector2i Movement;
 typedef char Piece;
 
 
-
 namespace game_manager
 {
 
@@ -36,18 +35,15 @@ struct Action
     Piece piece;
 };
 
-class Problem {
-
+class Problem
+{
 private:
     int side_;
 
-    int max_value__minmax(const State &);
-    int min_value__minmax(const State &);
     std::vector<State> successors(const State &, Piece);
 
 public:
     Problem() : side_(0) {}
-
 
     bool isTicTacToe(State state, Piece);
 
@@ -73,8 +69,35 @@ public:
      * This function returns if is TICTACTOE or the table is FULL
      **/
     bool isTerminalState(const State & state);
+};
+
+
+/**
+ * ProblemResolver Class uses the logic algorithms to resolve the game
+ **/
+class ProblemResolver
+{
+private:
+    Problem * problem_;
     
+public:
+    ProblemResolver() : problem_(nullptr) {};
+    
+    void setProblem(Problem * problem) { problem_=problem; }
+
+    /**
+     * Minmax algorithm
+     **/
+    int max_value__minmax(const State &);
+    int min_value__minmax(const State &);
     State minmax_decision(const State & state);
+
+    /**
+     * Alpha Beta Algorithm. Based on Minimax
+     **/
+    int max_value__minmax(const State &, int alpha, int beta, int depth);
+    int min_value__minmax(const State &, int alpha, int beta, int depth);
+    State alpha_beta_search(const State & state);
 };
 
 };

@@ -20,6 +20,7 @@
 void drawGrid(sf::RenderTarget & target, sf::RenderStates states,
     std::map<std::string, sf::Vector2f> points, int rows = 3, int cols = 3)
 {
+    // Drawing horizontal lines
     for (int i = 1 ; i < rows; i++) {
         sf::RectangleShape line(sf::Vector2f(points["BR"].x-points["BL"].x, 5));
         line.setPosition(sf::Vector2f(
@@ -28,6 +29,7 @@ void drawGrid(sf::RenderTarget & target, sf::RenderStates states,
         target.draw(line, states);
     }
 
+    // Drawing vertical lines
     for (int i = 1 ; i < cols; i++) {
         sf::RectangleShape line(sf::Vector2f(points["BR"].x-points["BL"].x, 5));
         line.rotate(90);
@@ -39,20 +41,22 @@ void drawGrid(sf::RenderTarget & target, sf::RenderStates states,
 }
 
 GraphicsTable::GraphicsTable(const sf::Vector2f & tl, const sf::Vector2f & br, int side)
-    : boxes_(side*side, '-'), side_(side)
+    :  side_(side), boxes_(side*side, '-')
 {
+    // Setting the table extreme points
     points_["TL"] = tl;                         // Top Left
     points_["TR"] = sf::Vector2f(br.x, tl.y);   // Top Right
     points_["BL"] = sf::Vector2f(tl.x, br.y);   // Bottom Left
     points_["BR"] = br;                         // Bottom Right
 
+    // Width and Height of the table
     width_ = br.x - tl.x;
     height_ = br.y - tl.y;
-    // Get Size of cell
+
+    // Setting size of cell
     cellsize_ = (points_.at("TR").x-points_.at("TL").x)/side_;
 };
 
-/** It returns x, y, w, h **/
 std::vector<int> GraphicsTable::getDimensions() const
 {
     std::vector<int> dim(4, 0);
@@ -63,15 +67,20 @@ std::vector<int> GraphicsTable::getDimensions() const
     return dim;
 }
 
-sf::Vector2i GraphicsTable::realPose2DiscretePose(const sf::Vector2i & pose) const
+std::unique_ptr<sf::Vector2i> GraphicsTable::realPose2DiscretePose(const sf::Vector2i & pose) const
 {
-    // TODO DELIMITAR TABLA
+    if ((pose.x < points_.at("TL").x) ||
+        (pose.y < points_.at("TL").y) ||
+        (pose.x > points_.at("TR").x) ||
+        (pose.y > points_.at("BL").y)) {
+        return nullptr;
+    }
 
     // We focus only the table, not the window
     int r = (pose.y - points_.at("TL").y) / cellsize_;
     int c = (pose.x - points_.at("TL").x) / cellsize_;
 
-    return sf::Vector2i(r, c);
+    return std::unique_ptr<sf::Vector2i>(new sf::Vector2i(r, c));
 }
 
 void GraphicsTable::setPosePiece(int row, int col, char piece)
@@ -79,7 +88,7 @@ void GraphicsTable::setPosePiece(int row, int col, char piece)
     boxes_[row*side_+col] = piece;
 }
 
-void GraphicsTable::setState(const std::vector <char> state)
+void GraphicsTable::setState(const State & state)
 {
     boxes_=state;
 }

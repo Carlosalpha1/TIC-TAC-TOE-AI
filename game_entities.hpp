@@ -20,6 +20,8 @@
 #include <vector>
 #include <iostream>
 
+typedef std::vector<char> State;
+
 class GraphicsTable : public sf::Drawable
 {
 protected:
@@ -29,21 +31,48 @@ protected:
     float cellsize_;
 
 public:
+    /**
+     * Extreme 1 point is the Top Left point
+     * Extreme 2 point is the Bottom Right point
+     **/
     GraphicsTable(const sf::Vector2f & ext1, const sf::Vector2f & ext2, int side = 3);
+    
     ~GraphicsTable(){};
 
+    /**
+     * It returns x, y, w, h of the Table
+     **/
     std::vector<int> getDimensions() const;
-    std::vector<char> getState() const { return boxes_; }
-    sf::Vector2i realPose2DiscretePose(const sf::Vector2i & pose) const;
+    
+    /**
+     * It returns the current State (map of the cells)
+     **/
+    State getState() const { return boxes_; }
+    
+    /**
+     * It converts a Real Pose to Discrete Pose (Row, Column)
+     **/
+    std::unique_ptr<sf::Vector2i> realPose2DiscretePose(const sf::Vector2i & pose) const;
 
     void setPosePiece(int row, int col, char piece);
-    void setState(const std::vector <char> state);
+    
+    void setState(const State & state);
+    
     char getPiece(int row, int col) const;
+    
     bool isFull() const;
+    
+    /**
+     * It resets the table. All cells to empty (-)
+     **/
     void clear();
+    
+    /**
+     * This functions lets the GraphicsTable class to be a drawable object
+     **/
     void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
     friend std::ostream & operator<<(std::ostream & os, const GraphicsTable & table);
 };
 
-#endif
+#endif  // TICTACTOE_AI_GAME_ENTITIES_HPP_

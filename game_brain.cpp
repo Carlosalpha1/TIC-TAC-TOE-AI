@@ -23,59 +23,12 @@ namespace game_manager
 {
 
 /**
- *  MinMax Algorithm
- **/
-State Problem::minmax_decision(const State & state)
-{
-    side_ = std::sqrt(state.size());
-
-    State best_state;
-    int value;
-    int i_max = 0, max_score = -99999;
-    auto moves = actions(state, 'O');
-
-    for (std::size_t i = 0; i < moves.size(); i++) {
-        value = min_value__minmax(result(state, moves[i]));
-        if (value > max_score) {
-            max_score = value;
-            i_max = i;
-        }
-    }
-
-    return result(state, moves[i_max]);
-}
-
-int Problem::max_value__minmax(const State & state)
-{
-    if (isTerminalState(state)) {
-        return utility(state);
-    }
-    
-    int value = -std::numeric_limits<int>::max();
-    for (auto action : actions(state, 'O')) {
-        value = std::max(value, min_value__minmax(result(state, action)));
-    }
-    return value;
-}
-
-int Problem::min_value__minmax(const State & state)
-{
-    if (isTerminalState(state)) {
-        return utility(state);
-    }
-    
-    int value = std::numeric_limits<int>::max();
-    for (auto action : actions(state, 'X')) {
-        value = std::min(value, max_value__minmax(result(state, action)));
-    }
-    return value;
-}
-
-/**
  * GAME/PROBLEM METHODS
  **/
 std::vector<Action> Problem::actions(const State & state, Piece piece)
 {
+    side_ = std::sqrt(state.size());
+
     std::vector<Action> actions;
 
     for (std::size_t i = 0; i < state.size(); i++) {
@@ -112,7 +65,7 @@ int Problem::utility(const State & state)
     }
 
     int k = 1;
-    for (int i = 0; i < state.size(); i++) {
+    for (std::size_t i = 0; i < state.size(); i++) {
         if (state[i] == '-') {
             k++;
         }
@@ -174,6 +127,108 @@ bool Problem::isTicTacToe(State state, Piece piece)
         if (i == (nrows-1)) return true;
     }
     return false;
+}
+
+/**
+ *  MinMax Algorithm
+ **/
+State ProblemResolver::minmax_decision(const State & state)
+{
+    State best_state;
+    int value, i_max = 0, max_score = -99999;
+    auto moves = problem_->actions(state, 'O');
+
+    for (std::size_t i = 0; i < moves.size(); i++) {
+        value = min_value__minmax(problem_->result(state, moves[i]));
+        if (value > max_score) {
+            max_score = value;
+            i_max = i;
+        }
+    }
+    return problem_->result(state, moves[i_max]);
+}
+
+int ProblemResolver::max_value__minmax(const State & state)
+{
+    if (problem_->isTerminalState(state)) {
+        return problem_->utility(state);
+    }
+    
+    int value = -std::numeric_limits<int>::max();
+    for (auto action : problem_->actions(state, 'O')) {
+        value = std::max(value, min_value__minmax(problem_->result(state, action)));
+    }
+    return value;
+}
+
+int ProblemResolver::min_value__minmax(const State & state)
+{
+    if (problem_->isTerminalState(state)) {
+        return problem_->utility(state);
+    }
+    
+    int value = std::numeric_limits<int>::max();
+    for (auto action : problem_->actions(state, 'X')) {
+        value = std::min(value, max_value__minmax(problem_->result(state, action)));
+    }
+    return value;
+}
+
+/**
+ * Alpha-Beta Algorithm
+ **/
+State ProblemResolver::alpha_beta_search(const State & state)
+{
+    State best_state;
+    int value, i_best = 0;
+    int best_score = -std::numeric_limits<int>::max();
+    int beta = std::numeric_limits<int>::max();
+
+    auto moves = problem_->actions(state, 'O');
+
+    for (std::size_t i = 0; i < moves.size(); i++) {
+        value = min_value__minmax(problem_->result(state, moves[i]), best_score, beta, 0);
+        if (value > best_score) {
+            best_score = value;
+            i_best = i;
+        }
+    }
+
+    return problem_->result(state, moves[i_best]);
+}
+
+int ProblemResolver::max_value__minmax(const State & state, int alpha, int beta, int depth)
+{
+    if (problem_->isTerminalState(state) || (depth > 8)) {
+        return problem_->utility(state);
+    }
+    
+    int value = -std::numeric_limits<int>::max();
+    for (auto action : problem_->actions(state, 'O')) {
+        value = std::max(value, min_value__minmax(problem_->result(state, action), alpha, beta, depth+1));
+        if (value >= beta) {
+            return value;
+        }
+        alpha = std::max(alpha, value);
+    }
+    return value;
+}
+
+int ProblemResolver::min_value__minmax(const State & state, int alpha, int beta, int depth)
+{
+    if (problem_->isTerminalState(state) || (depth > 8)) {
+        return problem_->utility(state);
+    }
+
+    int value = std::numeric_limits<int>::max();
+    for (auto action : problem_->actions(state, 'X')) {
+        value = std::min(value, max_value__minmax(problem_->result(state, action), alpha, beta, depth+1));
+        if (value <= alpha) {
+            return value;
+        }
+        beta = std::min(beta, value);
+    }
+    return value;
 }
 
 }

@@ -58,6 +58,8 @@ int main(int argc, char **argv)
         sf::Vector2f(45, 215),
         sf::Vector2f(735, 900));
     game_manager::Problem game;
+    game_manager::ProblemResolver problem_resolver;
+    problem_resolver.setProblem(&game);
     
     /**
      * It sets the initial value of the game state variables
@@ -129,20 +131,23 @@ int main(int argc, char **argv)
                 if (b_clicked) {
                     b_clicked = false;
                     sf::Vector2i position = sf::Mouse::getPosition(window);            
-                    sf::Vector2i transform_pose = table.realPose2DiscretePose(position);
+                    std::unique_ptr<sf::Vector2i> transform_pose = table.realPose2DiscretePose(position);
 
-                    int row = transform_pose.x;
-                    int col = transform_pose.y;
-                
-                    if (table.getPiece(row, col) == '-') {
-                        table.setPosePiece(row, col, 'X');
+                    if (transform_pose != nullptr) {
+                        int row = transform_pose->x;
+                        int col = transform_pose->y;
+                        
+                        if (table.getPiece(row, col) == '-') {
+                            table.setPosePiece(row, col, 'X');
+                            b_analysis = true;
+                        }
                     }
-                    b_analysis = true;
                 }
             }
             else {
                 if (!b_game_over) {
-                    auto opponent_move = game.minmax_decision(table.getState());
+                    //auto opponent_move = problem_resolver.minmax_decision(table.getState());
+                    auto opponent_move = problem_resolver.alpha_beta_search(table.getState());
                     table.setState(opponent_move);
                     b_analysis = true;
                 }
@@ -151,8 +156,7 @@ int main(int argc, char **argv)
             if (b_analysis) {
                 auto state = table.getState();
 
-                if (game.isTicTacToe(state, 'O') ||
-                    game.isTicTacToe(state, 'X')) {
+                if (game.isTicTacToe(state, 'O') || game.isTicTacToe(state, 'X')) {
                     
                     std::string str_winner = b_player_turn ? "YOU WIN!" : "MACHINE WINS!";
                     b_game_over = true;
@@ -161,7 +165,6 @@ int main(int argc, char **argv)
                     b_game_over = true;
                 }
                 else {
-                    char next_turn = b_player_turn ? 'X' : 'O';
                     b_player_turn = !b_player_turn;
                 }
                 b_analysis = false;
