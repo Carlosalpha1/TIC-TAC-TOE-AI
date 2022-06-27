@@ -1,8 +1,8 @@
 
-OUT=main
+OUT=tictactoe
 CFLAGS = -Wall -Wshadow
 LIBS = `pkg-config --cflags --libs sfml-graphics sfml-system sfml-window`
-SRC = main.cpp game_entities.cpp game_brain.cpp
+SRC = src/main.cpp src/game_entities.cpp src/game_brain.cpp
 
 all:
 	g++ -o $(OUT) $(CFLAGS) $(SRC) $(LIBS)
